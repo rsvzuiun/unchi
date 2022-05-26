@@ -39,7 +39,9 @@ export const talk = (
   idx = buffer.writeInt32LE(sizeText, idx)
   buffer.write(text, idx)
 
-  const client = net.connect({ port, host })
-  client.write(buffer)
-  client.end()
+  const client = net.createConnection({ port, host },
+    () => {
+      client.write(buffer)
+      client.end()
+    }).on('error', (err) => console.log(err))
 }
